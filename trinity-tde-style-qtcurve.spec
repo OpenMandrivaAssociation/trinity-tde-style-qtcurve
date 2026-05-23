@@ -2,10 +2,6 @@
 %bcond gamin 1
 
 # TDE variables
-%if "%{?tde_version}" == ""
-%define tde_version 14.1.5
-%endif
-
 %define tde_pkg tde-style-qtcurve
 %define tde_prefix /opt/trinity
 
@@ -15,14 +11,14 @@
 %define _disable_rebuild_configure 1
 
 # fixes error: Empty %files file …/debugsourcefiles.list
-%define _debugsource_template %{nil}
+%undefine _debugsource_template
 
 %define tarball_name %{tde_pkg}-trinity
 
 
 Name:		trinity-%{tde_pkg}
-Version:	0.55.2
-Release:	%{?tde_version:%{tde_version}_}3
+Version:	14.1.6
+Release:	1
 Summary:	This is a set of widget styles for Trinity based apps
 Group:		Applications/Utilities
 URL:		http://www.trinitydesktop.org/
@@ -30,7 +26,7 @@ URL:		http://www.trinitydesktop.org/
 License:	GPLv2+
 
 
-Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/themes/%{tarball_name}-%{tde_version}.tar.xz
+Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{version}/main/applications/themes/%{tarball_name}-%{version}.tar.xz
 
 BuildSystem:    cmake
 
@@ -44,12 +40,13 @@ BuildOption:    -DQTC_STYLE_SUPPORT=ON
 BuildOption:    -DBUILD_ALL=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
-BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
-BuildRequires:	trinity-tdebase-devel >= %{tde_version}
+BuildRequires:	trinity-tdelibs-devel >= %{version}
+BuildRequires:	trinity-tdebase-devel >= %{version}
+BuildRequires:	trinity-tde-cmake >= %{version}
+
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext
 
-BuildRequires:	trinity-tde-cmake >= %{tde_version}
 BuildRequires: libtool
 
 %{!?with_clang:BuildRequires:	gcc-c++}
@@ -79,10 +76,10 @@ BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
 
 
-Obsoletes:		trinity-kde-style-qtcurve < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:		trinity-kde-style-qtcurve = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:		trinity-style-qtcurve < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:		trinity-style-qtcurve = %{?epoch:%{epoch}:}%{version}-%{release}
+Obsoletes:		trinity-kde-style-qtcurve < %{EVRD}
+Provides:		trinity-kde-style-qtcurve = %{EVRD}
+Obsoletes:		trinity-style-qtcurve < %{EVRD}
+Provides:		trinity-style-qtcurve = %{EVRD}
 
 
 %description
